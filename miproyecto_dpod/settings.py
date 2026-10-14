@@ -79,20 +79,21 @@ WSGI_APPLICATION = 'miproyecto_dpod.wsgi.application'
 
 DATABASES = {
     'default': {
-        # ENGINE: qué motor de base de datos usar — mysql en vez del sqlite3 por defecto
         'ENGINE': 'django.db.backends.mysql',
-        # NAME: nombre de la base de datos, leído de la variable DB_NAME del .env
         'NAME': config('DB_NAME'),
-        # USER: usuario de conexión, leído de DB_USER
         'USER': config('DB_USER'),
-        # PASSWORD: contraseña de conexión, leída de DB_PASSWORD
         'PASSWORD': config('DB_PASSWORD'),
-        # HOST: servidor donde vive la base de datos, leído de DB_HOST
         'HOST': config('DB_HOST'),
-        # PORT: puerto de conexión; default='3306' se usa solo si DB_PORT no está en el .env
-        'PORT': config('DB_PORT', default='3306'),
-        # OPTIONS: Aiven exige que la conexión venga cifrada (SSL)
-        'OPTIONS': {'ssl': {'ssl-mode': 'REQUIRED'}},
+        'PORT': config('DB_PORT'),
+        'OPTIONS': {
+            'ssl': {'ssl-mode': 'REQUIRED'},
+            'connect_timeout': 60,
+            'read_timeout': 600,
+            'write_timeout': 600,
+            'charset': 'utf8mb4',
+        },
+        'CONN_MAX_AGE': 0,
+        'ATOMIC_REQUESTS': False,
     }
 }
 
